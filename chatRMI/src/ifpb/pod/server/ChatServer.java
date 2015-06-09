@@ -49,4 +49,19 @@ public class ChatServer extends UnicastRemoteObject implements ChatServerIF {
 		
 	}
 
+	@Override
+	public void menu(ChatClientIF chatClient) throws RemoteException {
+		
+		/*
+		 * 
+		 * ("\n	Bem vindo ao CHAT LINE "+nome+"! Menu:\n\n"
+				1 : Envia mensagem para todos os participantes do grupo\n"
+				2 : Envia mensagem para usuario específico\n"
+				3 : Listar todos os participantes do grupo\n"
+				4 : Altera seu username\n"
+				5 : Sair do grupo\n\n");
+		
+		 */
+	}
+
 }
