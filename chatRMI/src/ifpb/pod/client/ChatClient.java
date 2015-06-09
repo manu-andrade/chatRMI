@@ -46,43 +46,48 @@ public class ChatClient extends UnicastRemoteObject implements ChatClientIF {
 		this.name = name;
 	}
 
-<<<<<<< HEAD
 	public static void main(String[] args) {
 		
 		try{
 			System.out.println("Digite o nome do usuário:");
         	ChatClient cliente = new ChatClient(keyboard.nextLine());
         	while(true){
-    			chatServer.menu(cliente);
+    			chatServer.displayMenu();
     			String cmd = keyboard.nextLine();
     			switch (cmd){
     				case "1":
-    					chatServer.broadcastMessage(message);
+    					chatServer.broadcastMessage(cliente, keyboard.nextLine());
     					break;
-    					
+    				case "2":
+    					System.out.print("Digite o nome do destinatario:");
+    					String dest = keyboard.nextLine();
+    					System.out.println("Mensagem:");
+    					chatServer.sendPrivateMessage(dest , cliente, keyboard.nextLine());
+    					break;
+    				case "3":
+    					System.out.println(chatServer.listUsers(cliente));
+    					break;
+    				case "4":
+    					chatServer.renameUser(cliente, keyboard.nextLine());
+    					break;
+    				case "5":
+    					chatServer.exit(cliente);
+    					return;
+    				default:
+    					System.out.println("Comando Inválido!");
+    					break;
     			}
     			
     		}
 		}catch (RemoteException ex) {
-=======
-	public static void main(String[] args) throws MalformedURLException, RemoteException, NotBoundException {
-		String chatServerURL = "rmi://10.0.4.70/RMIChatServer";
-		ChatServerIF chatServer = (ChatServerIF) Naming.lookup(chatServerURL);
-		chatServer.registerChatClient(new ChatClient("Amanda"));
-		chatServer.broadcastMessage("Enviei");
-		
-		while(true){
-			
->>>>>>> branch 'master' of https://github.com/manu-andrade/chatRMI.git
 		}
 		
 		
-		
-		
-		
+				
 	
 	
 	}
 
 	
 }
+
