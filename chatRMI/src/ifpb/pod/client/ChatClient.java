@@ -36,6 +36,7 @@ public class ChatClient extends UnicastRemoteObject implements ChatClientIF {
 		ChatServerIF chatServer = (ChatServerIF) Naming.lookup(chatServerURL);
 		chatServer.registerChatClient(new ChatClient("Amanda"));
 		chatServer.broadcastMessage("Enviei");
+		
 		while(true){
 			
 		}
