@@ -1,39 +1,45 @@
 package ifpb.pod.client;
 
 import ifpb.pod.server.ChatServerIF;
-
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.Scanner;
 
-public class ChatClient extends UnicastRemoteObject implements ChatClientIF, Runnable {
+public class ChatClient extends UnicastRemoteObject implements ChatClientIF {
 	private static final long serialVersionUID = 1L;
-	private ChatServerIF chatServer;
 	private String name = null;
 	
 
-	protected ChatClient(String name, ChatServerIF chatServer) throws RemoteException {
+	protected ChatClient(String name) throws RemoteException {
 		this.name = name;
-		this.chatServer = chatServer;
-		chatServer.registerChatClient(this);
+		
 	}
 
 	public void retrieveMessage(String message) throws RemoteException {
 		System.out.println(message);
 	}
 	
-	public void run(){
-		Scanner scanner = new Scanner(System.in);
-		String message;
 		
+	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public static void main(String[] args) throws MalformedURLException, RemoteException, NotBoundException {
+		String chatServerURL = "rmi://10.0.4.70/RMIChatServer";
+		ChatServerIF chatServer = (ChatServerIF) Naming.lookup(chatServerURL);
+		chatServer.registerChatClient(new ChatClient("Amanda"));
+		chatServer.broadcastMessage("Enviei");
 		while(true){
-			message = scanner.nextLine();
 			
-			try {
-				chatServer.broadcastMessage(name + " : " + message);
-			} catch (RemoteException e) {
-				e.printStackTrace();
-			}
 		}
+		
+
 	}
 }

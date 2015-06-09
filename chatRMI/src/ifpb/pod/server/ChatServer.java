@@ -2,7 +2,12 @@ package ifpb.pod.server;
 
 import ifpb.pod.client.ChatClientIF;
 
+import java.net.MalformedURLException;
+import java.net.UnknownHostException;
+import java.rmi.Naming;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
@@ -17,15 +22,31 @@ public class ChatServer extends UnicastRemoteObject implements ChatServerIF {
 	@Override
 	public synchronized void registerChatClient(ChatClientIF chatClient)
 			throws RemoteException {
+		chatClient.retrieveMessage("Aceita Galã");
 		this.chatClients.add(chatClient);
 	}
 
 	@Override
 	public synchronized void broadcastMessage(String message) throws RemoteException {
 		int i = 0;
+		
 		while(i < chatClients.size()){
 			chatClients.get(i++).retrieveMessage(message);
 		}
+	}
+	
+	public static void main(String[] args){
+		try {
+			 LocateRegistry.createRegistry(Registry.REGISTRY_PORT);
+			Naming.rebind("RMIChatServer",new ChatServer());
+			java.net.InetAddress inetAdress = java.net.InetAddress.getLocalHost();  
+            String ip = inetAdress.getHostAddress();  
+            System.out.println(ip);
+		} catch (RemoteException | MalformedURLException | UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 }
