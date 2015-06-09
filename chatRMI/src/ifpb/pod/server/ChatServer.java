@@ -9,7 +9,10 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+
 
 public class ChatServer extends UnicastRemoteObject implements ChatServerIF {
 	private static final long serialVersionUID = 1L;
@@ -22,17 +25,89 @@ public class ChatServer extends UnicastRemoteObject implements ChatServerIF {
 	@Override
 	public synchronized void registerChatClient(ChatClientIF chatClient)
 			throws RemoteException {
-		chatClient.retrieveMessage("Aceita Galã");
+		
+		for(ChatClientIF cc : chatClients){
+			if(chatClient.getName().equals(cc.getName())){
+				chatClient.retrieveMessage("Oops! Esse nome ja existe! Try again >]");
+			}
+		}
 		this.chatClients.add(chatClient);
+		chatClient.retrieveMessage("Usuario registrado com sucesso..");
 	}
 
 	@Override
-	public synchronized void broadcastMessage(String message) throws RemoteException {
-		int i = 0;
-		
-		while(i < chatClients.size()){
-			chatClients.get(i++).retrieveMessage(message);
+	public synchronized void broadcastMessage(ChatClientIF chatClient, String message) throws RemoteException {
+			
+		for(ChatClientIF client : chatClients){
+			if(!chatClient.getName().equals(client.getName())){
+				sendPrivateMessage(client.getName(), chatClient, message);
+			}
 		}
+	}
+
+	public String displayMenu(){
+		String menu = "---------------------------------------------------"
+				    + "--------------BEM VINDOS AO CHAT RMI---------------"
+				    + "---------------------------------------------------"
+				    + "| 1 - Entrar no chat                              |" 
+				    + "| 2 - Enviar Mensagem                             |"
+				    + "| 3 - Enviar Mensagem Privada                     |"
+				    + "| 4 - Listar Usuarios Online                      |"
+				    + "| 5 - Renomear Usuario                            |"
+				    + "| 6 - Sair                                        |"
+				    + "---------------------------------------------------";
+		
+		return menu;
+	}
+
+	@Override
+	public void sendPrivateMessage(String dest, ChatClientIF chatClient,
+			String msg) throws RemoteException {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy - HH:mm");
+		Date d = new Date();
+		String date = dateFormat.format(d);
+		
+		for(ChatClientIF cc : chatClients){
+			if(cc.getName().equals(dest)){
+				cc.retrieveMessage(cc.getName() +":" + msg + "<" + date + ">");
+			}
+		}
+		
+	}
+
+	public String listUsers(ChatClientIF chatClient) throws RemoteException {
+		String list = "Lista de usuarios conectados: \n";
+		for(ChatClientIF cc : chatClients){
+			list += cc.getName() + "\n";
+		}
+		return list;
+		
+		
+	}
+
+	@Override
+	public void exit(ChatClientIF chatClient) throws RemoteException {
+		chatClients.remove(chatClient);
+		chatClient.retrieveMessage(chatClient.getName() + "Saiu da sala.");
+		
+	}
+
+	@Override
+	public void renameUser(ChatClientIF chatClient, String newName)
+			throws RemoteException {
+		if((newName.length() == 0) || (newName.trim().equals(""))){
+			chatClient.retrieveMessage("Nome invalido");
+			return;
+		}
+		for(ChatClientIF cc : chatClients){
+			if(cc.getName().equals(newName)){
+				chatClient.retrieveMessage("Nome de usuario ja existente. Escolha outro!");
+				return;
+			}
+		}
+		chatClients.get(chatClients.indexOf(chatClient)).setName(newName);
+		chatClient.retrieveMessage("Nome alterado para: " + newName);
+		
 	}
 	
 	public static void main(String[] args){
@@ -47,21 +122,6 @@ public class ChatServer extends UnicastRemoteObject implements ChatServerIF {
 			e.printStackTrace();
 		}
 		
-	}
-
-	@Override
-	public void menu(ChatClientIF chatClient) throws RemoteException {
-		
-		/*
-		 * 
-		 * ("\n	Bem vindo ao CHAT LINE "+nome+"! Menu:\n\n"
-				1 : Envia mensagem para todos os participantes do grupo\n"
-				2 : Envia mensagem para usuario específico\n"
-				3 : Listar todos os participantes do grupo\n"
-				4 : Altera seu username\n"
-				5 : Sair do grupo\n\n");
-		
-		 */
 	}
 
 }

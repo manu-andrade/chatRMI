@@ -46,6 +46,7 @@ public class ChatClient extends UnicastRemoteObject implements ChatClientIF {
 		this.name = name;
 	}
 
+<<<<<<< HEAD
 	public static void main(String[] args) {
 		
 		try{
@@ -63,6 +64,16 @@ public class ChatClient extends UnicastRemoteObject implements ChatClientIF {
     			
     		}
 		}catch (RemoteException ex) {
+=======
+	public static void main(String[] args) throws MalformedURLException, RemoteException, NotBoundException {
+		String chatServerURL = "rmi://10.0.4.70/RMIChatServer";
+		ChatServerIF chatServer = (ChatServerIF) Naming.lookup(chatServerURL);
+		chatServer.registerChatClient(new ChatClient("Amanda"));
+		chatServer.broadcastMessage("Enviei");
+		
+		while(true){
+			
+>>>>>>> branch 'master' of https://github.com/manu-andrade/chatRMI.git
 		}
 		
 		
