@@ -23,6 +23,10 @@ public class ChatClient extends UnicastRemoteObject implements ChatClientIF {
 		try {
 			String chatServerURL = "rmi://10.0.142.90/RMIChatServer";
 			chatServer = (ChatServerIF) Naming.lookup(chatServerURL);
+//			while(!chatServer.registerChatClient(this)){
+//            	this.name = keyboard.nextLine();
+//            }
+			
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

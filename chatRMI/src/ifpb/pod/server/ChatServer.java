@@ -27,7 +27,7 @@ public class ChatServer extends UnicastRemoteObject implements ChatServerIF {
 			throws RemoteException {
 		
 		for(ChatClientIF cc : chatClients){
-			if(chatClient.getName().equals(cc.getName())){
+			if(cc.getName().equals(chatClient.getName())){
 				chatClient.retrieveMessage("Oops! Esse nome ja existe! Try again >]");
 			}
 		}
@@ -39,9 +39,9 @@ public class ChatServer extends UnicastRemoteObject implements ChatServerIF {
 	public synchronized void broadcastMessage(ChatClientIF chatClient, String message) throws RemoteException {
 			
 		for(ChatClientIF client : chatClients){
-			if(!chatClient.getName().equals(client.getName())){
+			//if(!chatClient.getName().equals(client.getName())){
 				sendPrivateMessage(client.getName(), chatClient, message);
-			}
+			//}
 		}
 	}
 
@@ -87,7 +87,7 @@ public class ChatServer extends UnicastRemoteObject implements ChatServerIF {
 	@Override
 	public void exit(ChatClientIF chatClient) throws RemoteException {
 		chatClients.remove(chatClient);
-		chatClient.retrieveMessage(chatClient.getName() + "Saiu da sala.");
+		chatClient.retrieveMessage(chatClient.getName() + " Saiu da sala.");
 		
 	}
 
