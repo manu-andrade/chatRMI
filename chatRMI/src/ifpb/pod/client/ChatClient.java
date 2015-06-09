@@ -21,7 +21,7 @@ public class ChatClient extends UnicastRemoteObject implements ChatClientIF {
 		this.name = name;
 		
 		try {
-			String chatServerURL = "rmi://10.0.4.70/RMIChatServer";
+			String chatServerURL = "rmi://10.0.142.90/RMIChatServer";
 			chatServer = (ChatServerIF) Naming.lookup(chatServerURL);
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
@@ -51,8 +51,9 @@ public class ChatClient extends UnicastRemoteObject implements ChatClientIF {
 		try{
 			System.out.println("Digite o nome do usuário:");
         	ChatClient cliente = new ChatClient(keyboard.nextLine());
+        	chatServer.registerChatClient(cliente);
         	while(true){
-    			chatServer.displayMenu();
+    			chatServer.displayMenu(cliente);
     			String cmd = keyboard.nextLine();
     			switch (cmd){
     				case "1":

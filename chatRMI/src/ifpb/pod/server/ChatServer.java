@@ -45,19 +45,18 @@ public class ChatServer extends UnicastRemoteObject implements ChatServerIF {
 		}
 	}
 
-	public String displayMenu(){
-		String menu = "---------------------------------------------------"
-				    + "--------------BEM VINDOS AO CHAT RMI---------------"
-				    + "---------------------------------------------------"
-				    + "| 1 - Entrar no chat                              |" 
-				    + "| 2 - Enviar Mensagem                             |"
-				    + "| 3 - Enviar Mensagem Privada                     |"
-				    + "| 4 - Listar Usuarios Online                      |"
-				    + "| 5 - Renomear Usuario                            |"
-				    + "| 6 - Sair                                        |"
+	public void displayMenu(ChatClientIF chatClient) throws RemoteException{
+		String msg = "---------------------------------------------------\n"
+				    + "--------------BEM VINDOS AO CHAT RMI---------------\n"
+				    + "---------------------------------------------------\n"
+				    + "| 1 - Enviar Mensagem                             |\n"
+				    + "| 2 - Enviar Mensagem Privada                     |\n"
+				    + "| 3 - Listar Usuarios Online                      |\n"
+				    + "| 4 - Renomear Usuario                            |\n"
+				    + "| 5 - Sair                                        |\n"
 				    + "---------------------------------------------------";
 		
-		return menu;
+		chatClient.retrieveMessage(msg);
 	}
 
 	@Override

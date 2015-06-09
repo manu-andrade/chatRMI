@@ -12,6 +12,6 @@ public interface ChatServerIF extends Remote{
 	public String listUsers(ChatClientIF chatClient) throws RemoteException;
 	public void exit(ChatClientIF chatClient) throws RemoteException;
 	public void renameUser(ChatClientIF chatClient, String newName) throws RemoteException;
-	public String displayMenu() throws RemoteException;
+	public void displayMenu(ChatClientIF chatClient) throws RemoteException;
 	
 }
