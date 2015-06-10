@@ -26,13 +26,19 @@ public class ChatServer extends UnicastRemoteObject implements ChatServerIF {
 	public synchronized void registerChatClient(ChatClientIF chatClient)
 			throws RemoteException {
 		
+		if((chatClient.getName().length() == 0) || (chatClient.getName().contains(" "))){
+			chatClient.retrieveMessage("Nome invalido");
+			return;
+		}
+		
 		for(ChatClientIF cc : chatClients){
 			if(cc.getName().equals(chatClient.getName())){
-				chatClient.retrieveMessage("Oops! Esse nome ja existe! Try again >]");
+				chatClient.retrieveMessage("Oops! Esse nome ja existe!");
+				return;
 			}
 		}
+		
 		this.chatClients.add(chatClient);
-		//broadcastMessage(chatClient, chatClient.getName() + " entrou na sala.");
 		for(ChatClientIF client : chatClients){
 		client.retrieveMessage(chatClient.getName() + " entrou na sala.");
 		}

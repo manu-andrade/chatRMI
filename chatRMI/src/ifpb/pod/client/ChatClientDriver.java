@@ -16,12 +16,12 @@ public class ChatClientDriver {
 		
 		try{
 			
-			String chatServerURL = "rmi://150.165.250.113/RMIChatServer";
+			String chatServerURL = "rmi://10.0.4.236/RMIChatServer";
 			chatServer = (ChatServerIF) Naming.lookup(chatServerURL); 
 			System.out.println("Digite o nome do usuário:");
-			
         	ChatClient cliente = new ChatClient(keyboard.nextLine());
         	chatServer.registerChatClient(cliente);
+
         	
         	while(true){
     			chatServer.displayMenu(cliente);
@@ -31,7 +31,7 @@ public class ChatClientDriver {
     					chatServer.broadcastMessage(cliente, keyboard.nextLine());
     					break;
     				case "2":
-    					System.out.print("Digite o nome do destinatario:");
+    					System.out.print("Digite o nome do usuario:");
     					String dest = keyboard.nextLine();
     					System.out.println("Mensagem:");
     					chatServer.sendPrivateMessage(dest , cliente, keyboard.nextLine());
