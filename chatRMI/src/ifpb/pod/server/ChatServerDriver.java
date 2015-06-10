@@ -15,7 +15,7 @@ public class ChatServerDriver {
 			Naming.rebind("RMIChatServer",new ChatServer());
 			java.net.InetAddress inetAdress = java.net.InetAddress.getLocalHost();  
             String ip = inetAdress.getHostAddress();  
-            System.out.println(ip);
+            System.out.println("Ip do servidor = " + ip);
 		} catch (RemoteException | MalformedURLException | UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

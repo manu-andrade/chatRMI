@@ -16,7 +16,7 @@ public class ChatClientDriver {
 		
 		try{
 			
-			String chatServerURL = "rmi://10.0.4.236/RMIChatServer";
+			String chatServerURL = "rmi://10.0.4.70/RMIChatServer";
 			chatServer = (ChatServerIF) Naming.lookup(chatServerURL); 
 			System.out.println("Digite o nome do usuário:");
         	ChatClient cliente = new ChatClient(keyboard.nextLine());
