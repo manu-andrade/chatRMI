@@ -21,7 +21,7 @@ public class ChatClient extends UnicastRemoteObject implements ChatClientIF {
 		this.name = name;
 		
 		try {
-			String chatServerURL = "rmi://10.0.142.90/RMIChatServer";
+			String chatServerURL = "rmi://192.168.56.1/RMIChatServer";
 			chatServer = (ChatServerIF) Naming.lookup(chatServerURL);
 //			while(!chatServer.registerChatClient(this)){
 //            	this.name = keyboard.nextLine();

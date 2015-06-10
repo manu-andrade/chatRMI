@@ -32,7 +32,8 @@ public class ChatServer extends UnicastRemoteObject implements ChatServerIF {
 			}
 		}
 		this.chatClients.add(chatClient);
-		chatClient.retrieveMessage("Usuario registrado com sucesso..");
+		broadcastMessage(chatClient, chatClient.getName() + " entrou na sala.");
+		//chatClient.retrieveMessage(chatClient.getName() + " entrou na sala.");
 	}
 
 	@Override
@@ -65,11 +66,17 @@ public class ChatServer extends UnicastRemoteObject implements ChatServerIF {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy - HH:mm");
 		Date d = new Date();
 		String date = dateFormat.format(d);
+		int flag = 0;
 		
 		for(ChatClientIF cc : chatClients){
 			if(cc.getName().equals(dest)){
-				cc.retrieveMessage(cc.getName() +":" + msg + "<" + date + ">");
+				flag = 1;
+				cc.retrieveMessage(chatClient.getName() +": " + msg + " < " + date + " >");
 			}
+		}
+		
+		if(flag == 0){
+			chatClient.retrieveMessage("Usuario inexistente");
 		}
 		
 	}
