@@ -32,8 +32,10 @@ public class ChatServer extends UnicastRemoteObject implements ChatServerIF {
 			}
 		}
 		this.chatClients.add(chatClient);
-		broadcastMessage(chatClient, chatClient.getName() + " entrou na sala.");
-		//chatClient.retrieveMessage(chatClient.getName() + " entrou na sala.");
+		//broadcastMessage(chatClient, chatClient.getName() + " entrou na sala.");
+		for(ChatClientIF client : chatClients){
+		client.retrieveMessage(chatClient.getName() + " entrou na sala.");
+		}
 	}
 
 	@Override
@@ -44,20 +46,6 @@ public class ChatServer extends UnicastRemoteObject implements ChatServerIF {
 				sendPrivateMessage(client.getName(), chatClient, message);
 			//}
 		}
-	}
-
-	public void displayMenu(ChatClientIF chatClient) throws RemoteException{
-		String msg = "---------------------------------------------------\n"
-				    + "--------------BEM VINDOS AO CHAT RMI---------------\n"
-				    + "---------------------------------------------------\n"
-				    + "| 1 - Enviar Mensagem                             |\n"
-				    + "| 2 - Enviar Mensagem Privada                     |\n"
-				    + "| 3 - Listar Usuarios Online                      |\n"
-				    + "| 4 - Renomear Usuario                            |\n"
-				    + "| 5 - Sair                                        |\n"
-				    + "---------------------------------------------------";
-		
-		chatClient.retrieveMessage(msg);
 	}
 
 	@Override
@@ -94,7 +82,9 @@ public class ChatServer extends UnicastRemoteObject implements ChatServerIF {
 	@Override
 	public void exit(ChatClientIF chatClient) throws RemoteException {
 		chatClients.remove(chatClient);
-		chatClient.retrieveMessage(chatClient.getName() + " Saiu da sala.");
+		for(ChatClientIF client : chatClients){
+		client.retrieveMessage(chatClient.getName() + " Saiu da sala.");
+		}
 		
 	}
 
@@ -116,18 +106,18 @@ public class ChatServer extends UnicastRemoteObject implements ChatServerIF {
 		
 	}
 	
-	public static void main(String[] args){
-		try {
-			 LocateRegistry.createRegistry(Registry.REGISTRY_PORT);
-			Naming.rebind("RMIChatServer",new ChatServer());
-			java.net.InetAddress inetAdress = java.net.InetAddress.getLocalHost();  
-            String ip = inetAdress.getHostAddress();  
-            System.out.println(ip);
-		} catch (RemoteException | MalformedURLException | UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public void displayMenu(ChatClientIF chatClient) throws RemoteException{
+		String msg = "---------------------------------------------------\n"
+				    + "--------------BEM VINDOS AO CHAT RMI---------------\n"
+				    + "---------------------------------------------------\n"
+				    + "| 1 - Enviar Mensagem                             |\n"
+				    + "| 2 - Enviar Mensagem Privada                     |\n"
+				    + "| 3 - Listar Usuarios Online                      |\n"
+				    + "| 4 - Renomear Usuario                            |\n"
+				    + "| 5 - Sair                                        |\n"
+				    + "---------------------------------------------------";
 		
+		chatClient.retrieveMessage(msg);
 	}
 
 }
